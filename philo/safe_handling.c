@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:13:44 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/27 11:02:48 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 15:29:24 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	safe_mutex_handle(t_mtx_op op, t_mutex *mutex)
 {
 	int	err;
 
+	err = 0;
 	if (op == LOCK)
 		err = pthread_mutex_lock(mutex);
 	else if (op == UNLOCK)
