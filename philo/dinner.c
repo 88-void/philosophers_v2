@@ -6,31 +6,22 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 22:49:10 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:11:30 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//dining simulation
-/*
-	1_ if only 1 philo ?
-	2_ create all philos.
-	3_ create mintor thread.
-	4_ synchronising the philos before begenning.
-	5_ join philos.
-*/
-//NEED THE CASE OF ONE PHILO
 void	*monitoring(void *arg)
 {
-	t_table *table;
+	t_table	*table;
 	int		i;
 
 	i = 0;
 	table = arg;
 	while (i < table->nbr_of_philo && !get_end_simulation(table))
 	{
-		if(!get_end_simulation(table) && get_time()
+		if (!get_end_simulation(table) && get_time()
 			- get_last_meal_time(&table->philo_arr[i]) > table->time_to_die)
 		{
 			write_state(table->philo_arr[i].philo_id, table, DEATH);
@@ -38,7 +29,7 @@ void	*monitoring(void *arg)
 			break ;
 		}
 		i++;
-		usleep(500);
+		usleep(100);
 		if (i == table->nbr_of_philo)
 			i = 0;
 	}
@@ -47,13 +38,13 @@ void	*monitoring(void *arg)
 
 void	dinning_simulation(t_philo *philo)
 {
-	if (!(philo->philo_id % 2) && !philo->is_full
+	if (philo->philo_id % 2 && !philo->is_full
 		&& !get_end_simulation(philo->table))
 	{
 		eating_simulation(philo);
 		sleeping_simulation(philo);
 	}
-	else if (philo->philo_id % 2 && !philo->is_full
+	else if (!(philo->philo_id % 2) && !philo->is_full
 		&& !get_end_simulation(philo->table))
 	{
 		sleeping_simulation(philo);
@@ -64,14 +55,16 @@ void	dinning_simulation(t_philo *philo)
 void	one_philo_simulation(t_philo *philo)
 {
 	eating_simulation(philo);
+	precise_msleep(philo->table->time_to_die + 1);
 }
 
 void	*dinning_routine(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = arg;
-	while (get_philo_count(philo) < philo->table->nbr_of_philo);
+	while (get_philo_count(philo) < philo->table->nbr_of_philo)
+		;
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 		return (one_philo_simulation(philo), NULL);
@@ -85,7 +78,7 @@ void	*dinning_routine(void *arg)
 		while (!philo->is_full && !get_end_simulation(philo->table))
 		{
 			dinning_simulation(philo);
-			if (get_full_count(philo->table) == get_nbr_of_meals(philo->table))
+			if (get_full_count(philo->table) == philo->table->nbr_of_philo)
 				set_end_simulation(philo->table, true);
 		}
 	}
@@ -100,7 +93,8 @@ void	dinner_start(t_table *table)
 	table->start_time = get_time();
 	while (i < table->nbr_of_philo)
 	{
-		safe_ptcreate(&table->philo_arr[i].philo, dinning_routine, &table->philo_arr[i]);
+		safe_ptcreate(&table->philo_arr[i].philo,
+			dinning_routine, &table->philo_arr[i]);
 		increment_philo_init_count(table);
 		i++;
 	}
@@ -111,11 +105,10 @@ void	dinner_start(t_table *table)
 		safe_ptjoin(table->philo_arr[i].philo);
 		i++;
 	}
-	pthread_detach(table->mintor);
+	safe_ptjoin(table->mintor);
 	i = 0;
 	while (i < table->nbr_of_philo)
 		safe_mutex_handle(DESTROY, &table->fork_arr[i++]);
 	safe_mutex_handle(DESTROY, &table->table_mtx);
 	safe_mutex_handle(DESTROY, &table->print_mtx);
 }
- 

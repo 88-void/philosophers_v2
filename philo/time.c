@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:13:29 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/24 17:52:57 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 10:59:22 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	precise_msleep(long sleeping_time)
 {
 	long	current_time;
 	long	start;
-	
+
 	start = get_time();
 	current_time = get_time() - start;
 	while (current_time < sleeping_time)

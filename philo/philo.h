@@ -6,12 +6,12 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 22:18:06 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:14:58 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef PHILO_H
-#define PHILO_H
+#ifndef PHILO_H
+# define PHILO_H
 
 # include <pthread.h>
 # include <sys/time.h>
@@ -29,9 +29,9 @@
 # define C "\033[1;36m"
 # define RST "\033[0m"
 
-typedef pthread_mutex_t t_mutex;
+typedef pthread_mutex_t	t_mutex;
 
-typedef	enum s_mtx_op
+typedef enum s_mtx_op
 {
 	LOCK,
 	UNLOCK,
@@ -48,15 +48,15 @@ typedef enum s_wflag
 	EAT,
 }t_wflag;
 
-typedef struct s_table t_table;
+typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
 	pthread_t	philo;
-	long		philo_id;// 1, 2, 3, ...
-	long		last_meal_time;//the time of the last meal
-	bool		is_full;//eaten all meals
-	long		meals;//number of meals eaten
+	long		philo_id;
+	long		last_meal_time;
+	bool		is_full;
+	long		meals;
 	t_mutex		*right_fork;
 	t_mutex		*left_fork;
 	t_table		*table;
@@ -72,12 +72,12 @@ typedef struct s_table
 	long		full_count;
 	long		philo_init_count;
 	long		nbr_of_philo;
-	long		time_to_die;//in usec
-	long		time_to_eat;//in usec
-	long		time_to_sleep;//in usec
+	long		time_to_die;
+	long		time_to_eat;
+	long		time_to_sleep;
 	long		nbr_of_meals;
 	long		start_time;
-	bool		end_simulation;//if a philo died or all philos are full
+	bool		end_simulation;
 }		t_table;
 //error
 void	ft_putstr_err(const char *str);
@@ -98,17 +98,19 @@ void	precise_msleep(long sleeping_time);
 void	write_state(long philo_id, t_table *table, t_wflag flag);
 //setters and getters
 void	increment_philo_init_count(t_table *table);
+void	increment_full_count(t_table *table);
+void	set_end_simulation(t_table *table, bool value);
+void	set_last_meal_time(t_philo *philo, long value);
 long	get_philo_count(t_philo *philo);
 bool	get_end_simulation(t_table *table);
 long	get_nbr_of_meals(t_table *table);
-void	set_end_simulation(t_table *table, bool value);
-void	increment_full_count(t_table *table);
 long	get_full_count(t_table *table);
 long	get_last_meal_time(t_philo *philo);
-void	set_last_meal_time(t_philo *philo, long value);
 //simulations
 void	dinner_start(t_table *table);
 void	eating_simulation(t_philo *philo);
 void	sleeping_simulation(t_philo *philo);
+//free
+void	ft_clean(t_table *table);
 
 #endif

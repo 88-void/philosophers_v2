@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 15:46:25 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:14:18 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,13 @@ void	ft_putstr_err(const char *str)
 	write (2, "\n", 1);
 }
 
-void	philos_init(int	i, t_table *table)
+void	ft_clean(t_table *table)
+{
+	free(table->philo_arr);
+	free(table->fork_arr);
+}
+
+void	philos_init(int i, t_table *table)
 {
 	table->philo_arr[i].philo_id = i + 1;
 	table->philo_arr[i].last_meal_time = 0;
@@ -30,7 +36,8 @@ void	philos_init(int	i, t_table *table)
 	table->philo_arr[i].table = table;
 	table->philo_arr[i].right_fork = &table->fork_arr[i];
 	if (i == 0)
-		table->philo_arr[i].left_fork = &table->fork_arr[table->nbr_of_philo - 1];
+		table->philo_arr[i].left_fork
+			= &table->fork_arr[table->nbr_of_philo - 1];
 	else
 		table->philo_arr[i].left_fork = &table->fork_arr[i - 1];
 }

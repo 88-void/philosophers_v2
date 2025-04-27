@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:14:57 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 21:19:21 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:08:24 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ void	check_if_only_nbr(char **av)
 {
 	int	i;
 	int	j;
-	
+
 	i = 1;
 	while (av[i])
 	{
 		j = 0;
-		while(av[i][j])
+		while (av[i][j])
 		{
 			if (av[i][j] < '0' || av[i][j] > '9')
 				ft_error("arguments does not contain only numbers");

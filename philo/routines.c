@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:13:51 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 22:46:12 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:04:53 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 // eating routine
 /*
 	1_ grab forks, write the grabing forks.
-	2_ eat(usleep), write eating, update the philo last meal time, update meals counter.
+	2_ eat(usleep), write eating, update the philo last meal time, meals counter.
 	3_ release forks.
 */
 void	eating_simulation(t_philo *philo)
@@ -26,7 +26,7 @@ void	eating_simulation(t_philo *philo)
 		safe_mutex_handle(LOCK, philo->right_fork);
 		write_state(philo->philo_id, philo->table, FORK);
 		if (philo->table->nbr_of_philo == 1)
-			return(safe_mutex_handle(UNLOCK, philo->right_fork));
+			return (safe_mutex_handle(UNLOCK, philo->right_fork));
 		safe_mutex_handle(LOCK, philo->left_fork);
 		write_state(philo->philo_id, philo->table, FORK);
 		write_state(philo->philo_id, philo->table, EAT);
@@ -40,7 +40,7 @@ void	eating_simulation(t_philo *philo)
 			increment_full_count(philo->table);
 		}
 		set_last_meal_time(philo, get_time());
-		safe_mutex_handle(UNLOCK, philo->right_fork);	
+		safe_mutex_handle(UNLOCK, philo->right_fork);
 		safe_mutex_handle(UNLOCK, philo->left_fork);
 	}
 }

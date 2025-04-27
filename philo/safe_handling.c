@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/26 11:13:44 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/26 13:07:04 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/27 11:02:48 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	safe_ptcreate(pthread_t *thread, void *(f)(void *), void *arg)
 				" another thread, or the system-imposed limit on the total "
 				"number of threads in a process.");
 		else if (EPERM == err)
-			ft_error("The caller does not have appropriate permission to"
-				" set the required scheduling parameters or scheduling policy.");
+			ft_error("The caller does not have appropriate permission to "
+				"set the required scheduling parameters or scheduling policy.");
 		else if (EINVAL == err)
 			ft_error("The value specified by attr is invalid.");
 	}
@@ -83,7 +83,7 @@ void	mutex_err(int err, t_mtx_op op)
 
 void	safe_mutex_handle(t_mtx_op op, t_mutex *mutex)
 {
-	int err;
+	int	err;
 
 	if (op == LOCK)
 		err = pthread_mutex_lock(mutex);
