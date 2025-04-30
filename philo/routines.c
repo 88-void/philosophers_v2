@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:13:51 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/27 11:04:53 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:13:03 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ void	eating_simulation(t_philo *philo)
 			increment_full_count(philo->table);
 		}
 		set_last_meal_time(philo, get_time());
-		safe_mutex_handle(UNLOCK, philo->right_fork);
 		safe_mutex_handle(UNLOCK, philo->left_fork);
+		safe_mutex_handle(UNLOCK, philo->right_fork);
 	}
 }
 

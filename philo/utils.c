@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/27 11:14:18 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/30 16:56:25 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	philos_init(int i, t_table *table)
 	table->philo_arr[i].is_full = false;
 	table->philo_arr[i].table = table;
 	table->philo_arr[i].right_fork = &table->fork_arr[i];
-	if (i == 0)
+	if (i == 0 && table->nbr_of_philo != 1)
 		table->philo_arr[i].left_fork
 			= &table->fork_arr[table->nbr_of_philo - 1];
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/27 11:14:58 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/04/30 17:03:06 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <stdio.h>
+# include <stdint.h>
 # include <stdlib.h>
 # include <limits.h>
 # include <stdbool.h>
 # include <errno.h>
 
-# define R "\033[1;31m"
 # define G "\033[1;32m"
+# define RD "\033[1;31m"
 # define Y "\033[1;33m"
 # define M "\033[1;35m"
 # define C "\033[1;36m"
