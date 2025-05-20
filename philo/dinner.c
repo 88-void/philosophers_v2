@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 13:48:28 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 16:12:58 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*monitoring(void *arg)
 	while (i < table->nbr_of_philo && !get_end_simulation(table))
 	{
 		if (!get_end_simulation(table) && get_time()
-			- get_last_meal_time(&table->philo_arr[i]) > table->time_to_die)
+			- get_last_meal_time(&table->philo_arr[i]) >= table->time_to_die)
 		{
 			write_state(table->philo_arr[i].philo_id, table, DEATH);
 			set_end_simulation(table, true);
@@ -50,6 +50,7 @@ void	dinning_simulation(t_philo *philo)
 		sleeping_simulation(philo);
 		eating_simulation(philo);
 	}
+	usleep(100);
 }
 
 void	one_philo_simulation(t_philo *philo)
