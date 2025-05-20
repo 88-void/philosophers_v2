@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/27 11:00:29 by azarouil          #+#    #+#             */
-/*   Updated: 2025/04/27 11:05:24 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 11:22:34 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ bool	get_end_simulation(t_table *table)
 	return (ret);
 }
 
-long	get_nbr_of_meals(t_table *table)
-{
-	long	ret;
+// long	get_nbr_of_meals(t_table *table)
+// {
+// 	long	ret;
 
-	safe_mutex_handle(LOCK, &table->table_mtx);
-	ret = table->nbr_of_meals;
-	safe_mutex_handle(UNLOCK, &table->table_mtx);
-	return (ret);
-}
+// 	safe_mutex_handle(LOCK, &table->table_mtx);
+// 	ret = table->nbr_of_meals;
+// 	safe_mutex_handle(UNLOCK, &table->table_mtx);
+// 	return (ret);
+// }
 
 long	get_full_count(t_table *table)
 {

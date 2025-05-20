@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/19 22:50:43 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 12:46:31 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,14 @@ void	*monitoring(void *arg)
 	int		i;
 
 	i = 0;
-	table = arg;
+	table = (t_table *)arg;
 	while (i < table->nbr_of_philo && !get_end_simulation(table))
 	{
+		if (table->nbr_of_meals != -1 &&  get_full_count(table) == table->nbr_of_philo)
+		{
+			set_end_simulation(table, true);
+			break ;
+		}
 		if (!get_end_simulation(table) && (get_time()
 			- get_last_meal_time(&table->philo_arr[i])) > table->time_to_die)
 		{
@@ -29,7 +34,7 @@ void	*monitoring(void *arg)
 			break ;
 		}
 		i++;
-		usleep(5);
+		usleep(50);
 		if (i == table->nbr_of_philo)
 			i = 0;
 	}
@@ -38,14 +43,12 @@ void	*monitoring(void *arg)
 
 void	dinning_simulation(t_philo *philo)
 {
-	if (philo->philo_id % 2 && !philo->is_full
-		&& !get_end_simulation(philo->table))
+	if (philo->philo_id % 2 && !get_end_simulation(philo->table))
 	{
 		eating_simulation(philo);
 		sleeping_simulation(philo);
 	}
-	else if (!(philo->philo_id % 2) && !philo->is_full
-		&& !get_end_simulation(philo->table))
+	else if (!(philo->philo_id % 2) && !get_end_simulation(philo->table))
 	{
 		sleeping_simulation(philo);
 		eating_simulation(philo);
@@ -68,7 +71,7 @@ void	*dinning_routine(void *arg)
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 		return (one_philo_simulation(philo), NULL);
-	if (get_nbr_of_meals(philo->table) == -1)
+	if (philo->table->nbr_of_meals == -1)
 	{
 		while (!get_end_simulation(philo->table))
 			dinning_simulation(philo);
