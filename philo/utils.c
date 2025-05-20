@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 11:17:01 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:48:17 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	philos_init(int i, t_table *table)
 	table->philo_arr[i].is_full = false;
 	table->philo_arr[i].table = table;
 	table->philo_arr[i].right_fork = &table->fork_arr[i];
-	safe_mutex_handle(INIT, &table->philo_arr[i].meal);
 	if (i == 0 && table->nbr_of_philo != 1)
 		table->philo_arr[i].left_fork
 			= &table->fork_arr[table->nbr_of_philo - 1];

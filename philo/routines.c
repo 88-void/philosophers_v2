@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:13:51 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 12:21:32 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:47:58 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	eating_simulation(t_philo *philo)
 		write_state(philo->philo_id, philo->table, FORK);
 		write_state(philo->philo_id, philo->table, EAT);
 		precise_msleep(philo->table->time_to_eat);
-		if (philo->table->nbr_of_meals != -1)
+		if (get_nbr_of_meals(philo->table) != -1)
 			philo->meals++;
-		if (philo->table->nbr_of_meals != -1
-			&& philo->meals >= philo->table->nbr_of_meals)
+		if (get_nbr_of_meals(philo->table) != -1
+			&& philo->meals >= get_nbr_of_meals(philo->table))
 		{
 			philo->is_full = true;
 			increment_full_count(philo->table);

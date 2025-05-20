@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 11:57:54 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:48:07 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_philo
 	long		meals;
 	t_mutex		*right_fork;
 	t_mutex		*left_fork;
-	t_mutex		meal;
 	t_table		*table;
 }t_philo;
 
