@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:13:29 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 16:11:08 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:33:56 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ long	get_time(void)
 }
 
 // sleeping time in MILISECONDS
-void	precise_msleep(long sleeping_time)
+void	precise_msleep(long sleeping_time, t_table *table)
 {
 	long	target;
 
 	target = get_time() + sleeping_time;
-	while (get_time() < target)
+	while (!get_end_simulation(table) && get_time() < target)
 		usleep(100);
 }

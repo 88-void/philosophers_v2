@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 13:48:07 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:34:23 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	parser(int ac, char **av, t_table *table);
 void	table_init(t_table *table);
 //time
 long	get_time(void);
-void	precise_msleep(long sleeping_time);
+void	precise_msleep(long sleeping_time, t_table *table);
 //writing state
 void	write_state(long philo_id, t_table *table, t_wflag flag);
 //setters and getters

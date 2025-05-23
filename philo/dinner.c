@@ -6,7 +6,7 @@
 /*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 16:12:58 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/05/23 20:36:44 by azarouil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	dinning_simulation(t_philo *philo)
 void	one_philo_simulation(t_philo *philo)
 {
 	eating_simulation(philo);
-	precise_msleep(philo->table->time_to_die + 1);
+	precise_msleep(philo->table->time_to_die, philo->table);
 }
 
 void	*dinning_routine(void *arg)
