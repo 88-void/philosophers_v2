@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/23 20:36:44 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/09/18 19:38:00 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,12 @@ void	*monitoring(void *arg)
 
 void	dinning_simulation(t_philo *philo)
 {
-	if (philo->philo_id % 2 && !philo->is_full
-		&& !get_end_simulation(philo->table))
+	if (!philo->is_full && !get_end_simulation(philo->table))
 	{
 		eating_simulation(philo);
 		sleeping_simulation(philo);
 	}
-	else if (!(philo->philo_id % 2) && !philo->is_full
-		&& !get_end_simulation(philo->table))
-	{
-		sleeping_simulation(philo);
-		eating_simulation(philo);
-	}
-	usleep(100);
+	usleep(10);
 }
 
 void	one_philo_simulation(t_philo *philo)
@@ -71,6 +64,8 @@ void	*dinning_routine(void *arg)
 		return (one_philo_simulation(philo), NULL);
 	if (get_nbr_of_meals(philo->table) == -1)
 	{
+		if (philo->philo_id % 2)
+			sleeping_simulation(philo);
 		while (!get_end_simulation(philo->table))
 			dinning_simulation(philo);
 	}
@@ -78,6 +73,8 @@ void	*dinning_routine(void *arg)
 	{
 		while (!philo->is_full && !get_end_simulation(philo->table))
 		{
+			if (philo->philo_id % 2)
+				sleeping_simulation(philo);
 			dinning_simulation(philo);
 			if (get_full_count(philo->table) == philo->table->nbr_of_philo)
 				set_end_simulation(philo->table, true);
