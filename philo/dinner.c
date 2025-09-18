@@ -6,7 +6,7 @@
 /*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 22:58:26 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/09/18 23:31:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	*dinning_routine(void *arg)
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 		return (one_philo_simulation(philo), NULL);
-	if (philo->philo_id % 2)
+	if (philo->philo_id % 2 == 0)
 		sleeping_simulation(philo);
 	while (!get_end_simulation(philo->table))
 		dinning_simulation(philo);
@@ -100,14 +100,14 @@ void	dinner_start(t_table *table)
 		i++;
 	}
 	usleep(100);
-	monitoring(table);
+	safe_ptcreate(&table->mintor, monitoring, table);
 	i = 0;
 	while (i < table->nbr_of_philo)
 	{
 		safe_ptjoin(table->philo_arr[i].philo);
 		i++;
 	}
-	// ? cleaning ?
+	safe_ptjoin(table->mintor);
 	i = 0;
 	while (i < table->nbr_of_philo)
 		safe_mutex_handle(DESTROY, &table->fork_arr[i++]);
