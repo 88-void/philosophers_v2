@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routines.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:13:51 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/23 20:35:10 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/09/18 23:07:17 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,15 @@ void	eating_simulation(t_philo *philo)
 			return (safe_mutex_handle(UNLOCK, philo->right_fork));
 		safe_mutex_handle(LOCK, philo->left_fork);
 		write_state(philo->philo_id, philo->table, FORK);
+		set_last_meal_time(philo, get_time());
+		
 		write_state(philo->philo_id, philo->table, EAT);
 		precise_msleep(philo->table->time_to_eat, philo->table);
-		if (get_nbr_of_meals(philo->table) != -1)
-			philo->meals++;
-		if (get_nbr_of_meals(philo->table) != -1
-			&& philo->meals >= get_nbr_of_meals(philo->table))
-		{
-			philo->is_full = true;
-			increment_full_count(philo->table);
-		}
-		set_last_meal_time(philo, get_time());
+		
+		safe_mutex_handle(LOCK,  &philo->meal_mlx);
+		philo->meals++;
+		safe_mutex_handle(UNLOCK, &philo->meal_mlx);
+		
 		safe_mutex_handle(UNLOCK, philo->left_fork);
 		safe_mutex_handle(UNLOCK, philo->right_fork);
 	}

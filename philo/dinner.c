@@ -3,47 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 19:38:00 by void             ###   ########.fr       */
+/*   Updated: 2025/09/18 23:31:46 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+int get_philos_done(t_table *table)
+{
+	int idx;
+	unsigned int count;
+
+	idx = 0;
+	count = 0;
+	while (idx < table->nbr_of_philo)
+	{
+		safe_mutex_handle(LOCK, &table->philo_arr[idx].meal_mlx);
+		if (table->philo_arr[idx].meals >= table->nbr_of_meals)
+			count++;
+		safe_mutex_handle(UNLOCK, &table->philo_arr[idx].meal_mlx);
+		idx++;
+	}
+	return (count);
+}
+
 void	*monitoring(void *arg)
 {
 	t_table	*table;
 	int		i;
+	unsigned int full_count;
 
 	i = 0;
 	table = arg;
-	while (i < table->nbr_of_philo && !get_end_simulation(table))
+	while (!get_end_simulation(table))
 	{
-		if (!get_end_simulation(table) && get_time()
+		full_count = get_philos_done(table);
+		if (table->nbr_of_meals != -1 && full_count == table->nbr_of_philo)
+		{
+			set_end_simulation(table, true);
+			break ;
+		}
+		if (get_time()
 			- get_last_meal_time(&table->philo_arr[i]) >= table->time_to_die)
 		{
 			write_state(table->philo_arr[i].philo_id, table, DEATH);
 			set_end_simulation(table, true);
 			break ;
 		}
-		i++;
-		usleep(100);
-		if (i == table->nbr_of_philo)
-			i = 0;
+		i = (i + 1) % table->nbr_of_philo;
+		precise_msleep(1, table);
 	}
 	return (NULL);
 }
 
 void	dinning_simulation(t_philo *philo)
 {
-	if (!philo->is_full && !get_end_simulation(philo->table))
-	{
-		eating_simulation(philo);
-		sleeping_simulation(philo);
-	}
-	usleep(10);
+	eating_simulation(philo);
+	sleeping_simulation(philo);
+	// usleep(10);
 }
 
 void	one_philo_simulation(t_philo *philo)
@@ -57,29 +77,13 @@ void	*dinning_routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	while (get_philo_count(philo) < philo->table->nbr_of_philo)
-		;
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 		return (one_philo_simulation(philo), NULL);
-	if (get_nbr_of_meals(philo->table) == -1)
-	{
-		if (philo->philo_id % 2)
-			sleeping_simulation(philo);
-		while (!get_end_simulation(philo->table))
-			dinning_simulation(philo);
-	}
-	else
-	{
-		while (!philo->is_full && !get_end_simulation(philo->table))
-		{
-			if (philo->philo_id % 2)
-				sleeping_simulation(philo);
-			dinning_simulation(philo);
-			if (get_full_count(philo->table) == philo->table->nbr_of_philo)
-				set_end_simulation(philo->table, true);
-		}
-	}
+	if (philo->philo_id % 2 == 0)
+		sleeping_simulation(philo);
+	while (!get_end_simulation(philo->table))
+		dinning_simulation(philo);
 	return (NULL);
 }
 
@@ -93,11 +97,11 @@ void	dinner_start(t_table *table)
 	{
 		safe_ptcreate(&table->philo_arr[i].philo,
 			dinning_routine, &table->philo_arr[i]);
-		increment_philo_init_count(table);
 		i++;
 	}
+	usleep(100);
+	safe_ptcreate(&table->mintor, monitoring, table);
 	i = 0;
-	safe_ptcreate(&table->mintor, monitoring, &table->philo_arr);
 	while (i < table->nbr_of_philo)
 	{
 		safe_ptjoin(table->philo_arr[i].philo);

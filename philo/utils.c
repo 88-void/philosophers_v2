@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: azarouil <azarouil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/05/20 13:48:17 by azarouil         ###   ########.fr       */
+/*   Updated: 2025/09/18 22:32:58 by sel-mlil         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	ft_clean(t_table *table)
 
 void	philos_init(int i, t_table *table)
 {
+	safe_mutex_handle(INIT, &table->philo_arr[i].meal_mlx);
 	table->philo_arr[i].philo_id = i + 1;
 	table->philo_arr[i].last_meal_time = 0;
 	table->philo_arr[i].is_full = false;
