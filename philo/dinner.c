@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dinner.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 23:31:46 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/09/21 23:26:27 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,23 @@
 int get_philos_done(t_table *table)
 {
 	int idx;
-	unsigned int count;
+	int count;
 
 	idx = 0;
 	count = 0;
 	while (idx < table->nbr_of_philo)
 	{
-		safe_mutex_handle(LOCK, &table->philo_arr[idx].meal_mlx);
+		if (get_time()
+			- get_last_meal_time(&table->philo_arr[idx]) >= table->time_to_die)
+		{
+			write_state(table->philo_arr[idx].philo_id, table, DEATH);
+			set_end_simulation(table, true);
+			return (-1) ;
+		}
+		pthread_mutex_lock(&table->philo_arr[idx].meal_mtx);
 		if (table->philo_arr[idx].meals >= table->nbr_of_meals)
 			count++;
-		safe_mutex_handle(UNLOCK, &table->philo_arr[idx].meal_mlx);
+		pthread_mutex_unlock(&table->philo_arr[idx].meal_mtx);
 		idx++;
 	}
 	return (count);
@@ -33,28 +40,19 @@ int get_philos_done(t_table *table)
 void	*monitoring(void *arg)
 {
 	t_table	*table;
-	int		i;
-	unsigned int full_count;
+	int		full_count;
 
-	i = 0;
 	table = arg;
 	while (!get_end_simulation(table))
 	{
 		full_count = get_philos_done(table);
+		if (full_count == -1)
+			return (NULL);
 		if (table->nbr_of_meals != -1 && full_count == table->nbr_of_philo)
 		{
 			set_end_simulation(table, true);
-			break ;
+			return (NULL);
 		}
-		if (get_time()
-			- get_last_meal_time(&table->philo_arr[i]) >= table->time_to_die)
-		{
-			write_state(table->philo_arr[i].philo_id, table, DEATH);
-			set_end_simulation(table, true);
-			break ;
-		}
-		i = (i + 1) % table->nbr_of_philo;
-		precise_msleep(1, table);
 	}
 	return (NULL);
 }
@@ -95,19 +93,18 @@ void	dinner_start(t_table *table)
 	table->start_time = get_time();
 	while (i < table->nbr_of_philo)
 	{
-		safe_ptcreate(&table->philo_arr[i].philo,
-			dinning_routine, &table->philo_arr[i]);
-		i++;
+		pthread_create(&table->philo_arr[i].philo, NULL, dinning_routine
+			, &table->philo_arr[i]);
+			i++;
 	}
-	usleep(100);
-	safe_ptcreate(&table->mintor, monitoring, table);
+	pthread_create(&table->mintor, NULL, monitoring, table);
 	i = 0;
 	while (i < table->nbr_of_philo)
 	{
-		safe_ptjoin(table->philo_arr[i].philo);
+		pthread_join(table->philo_arr[i].philo, NULL);
 		i++;
 	}
-	safe_ptjoin(table->mintor);
+	pthread_join(table->mintor, NULL);
 	i = 0;
 	while (i < table->nbr_of_philo)
 		safe_mutex_handle(DESTROY, &table->fork_arr[i++]);

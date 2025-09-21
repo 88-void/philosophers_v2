@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 22:35:08 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/09/21 22:08:25 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ typedef struct s_philo
 	long		last_meal_time;
 	bool		is_full;
 	long		meals;
-	t_mutex		meal_mlx;
+	t_mutex		meal_mtx;
 	t_mutex		*right_fork;
 	t_mutex		*left_fork;
 	t_table		*table;

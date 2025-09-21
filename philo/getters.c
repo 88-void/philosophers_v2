@@ -12,43 +12,43 @@
 
 #include "philo.h"
 
-long	get_philo_count(t_philo *philo)
-{
-	long	ret;
+// long	get_philo_count(t_philo *philo)
+// {
+// 	long	ret;
 
-	safe_mutex_handle(LOCK, &philo->table->table_mtx);
-	ret = philo->table->philo_init_count;
-	safe_mutex_handle(UNLOCK, &philo->table->table_mtx);
-	return (ret);
-}
+// 	pthread_mutex_lock(&philo->table->table_mtx);
+// 	ret = philo->table->philo_init_count;
+// 	pthread_mutex_unlock(&philo->table->table_mtx);
+// 	return (ret);
+// }
 
 bool	get_end_simulation(t_table *table)
 {
 	bool	ret;
 
-	safe_mutex_handle(LOCK, &table->table_mtx);
+	pthread_mutex_lock(&table->table_mtx);
 	ret = table->end_simulation;
-	safe_mutex_handle(UNLOCK, &table->table_mtx);
+	pthread_mutex_unlock(&table->table_mtx);
 	return (ret);
 }
 
-long	get_nbr_of_meals(t_table *table)
-{
-	long	ret;
+// long	get_nbr_of_meals(t_table *table)
+// {
+// 	long	ret;
 
-	safe_mutex_handle(LOCK, &table->table_mtx);
-	ret = table->nbr_of_meals;
-	safe_mutex_handle(UNLOCK, &table->table_mtx);
-	return (ret);
-}
+// 	pthread_mutex_lock(&table->table_mtx);
+// 	ret = table->nbr_of_meals;
+// 	pthread_mutex_unlock(&table->table_mtx);
+// 	return (ret);
+// }
 
 long	get_full_count(t_table *table)
 {
 	long	ret;
 
-	safe_mutex_handle(LOCK, &table->table_mtx);
+	pthread_mutex_lock(&table->table_mtx);
 	ret = table->full_count;
-	safe_mutex_handle(UNLOCK, &table->table_mtx);
+	pthread_mutex_unlock(&table->table_mtx);
 	return (ret);
 }
 
@@ -56,8 +56,8 @@ long	get_last_meal_time(t_philo *philo)
 {
 	long	ret;
 
-	safe_mutex_handle(LOCK, &philo->table->table_mtx);
+	pthread_mutex_lock(&philo->table->table_mtx);
 	ret = philo->last_meal_time;
-	safe_mutex_handle(UNLOCK, &philo->table->table_mtx);
+	pthread_mutex_unlock(&philo->table->table_mtx);
 	return (ret);
 }

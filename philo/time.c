@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/21 20:13:29 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 18:50:47 by void             ###   ########.fr       */
+/*   Updated: 2025/09/21 21:43:11 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,5 @@ void	precise_msleep(long sleeping_time, t_table *table)
 
 	target = get_time() + sleeping_time;
 	while (!get_end_simulation(table) && get_time() < target)
-		usleep(100);
+		usleep(10);
 }

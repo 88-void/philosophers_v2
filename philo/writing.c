@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:46 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 20:02:52 by void             ###   ########.fr       */
+/*   Updated: 2025/09/21 22:43:39 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,23 @@
 void	write_state(long philo_id, t_table *table, t_wflag flag)
 {
 	safe_mutex_handle(LOCK, &table->print_mtx);
-	if (THINK == flag && !get_end_simulation(table))
-		printf("%ld %ld " M"is thinking\n"RST,
-			(get_time() - table->start_time), philo_id);
-	else if (DEATH == flag && !get_end_simulation(table))
-		printf("%ld %ld "RD"died\n"RST,
-			(get_time() - table->start_time), philo_id);
-	else if (SLEEP == flag && !get_end_simulation(table))
-		printf("%ld %ld "C"is sleeping\n"RST,
-			(get_time() - table->start_time), philo_id);
-	else if (FORK == flag && !get_end_simulation(table))
-		printf("%ld %ld "G"has taken a fork\n"RST, 
-			(get_time() - table->start_time), philo_id);
-	else if (EAT == flag && !get_end_simulation(table))
-		printf("%ld %ld "Y"is eating\n"RST,
-			(get_time() - table->start_time), philo_id);
+	if (!get_end_simulation(table))
+	{
+		if (THINK == flag)
+			printf("%ld %ld %sis thinking%s\n",
+				(get_time() - table->start_time),  philo_id, M, RST);
+		else if (DEATH == flag)
+			printf("%ld %ld %sdied%s\n",
+				(get_time() - table->start_time), philo_id, RD, RST);
+		else if (SLEEP == flag)
+			printf("%ld %ld %sis sleeping%s\n",
+				(get_time() - table->start_time), philo_id, C, RST);
+		else if (FORK == flag)
+			printf("%ld %ld %shas taken a fork%s\n", 
+				(get_time() - table->start_time), philo_id, G, RST);
+		else if (EAT == flag)
+			printf("%ld %ld %sis eating%s\n",
+				(get_time() - table->start_time), philo_id, Y, RST);		
+	}
 	safe_mutex_handle(UNLOCK, &table->print_mtx);
 }

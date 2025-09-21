@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-mlil <sel-mlil@student.42.fr>          +#+  +:+       +#+        */
+/*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/18 22:32:58 by sel-mlil         ###   ########.fr       */
+/*   Updated: 2025/09/21 22:13:35 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	ft_clean(t_table *table)
 
 void	philos_init(int i, t_table *table)
 {
-	safe_mutex_handle(INIT, &table->philo_arr[i].meal_mlx);
+	pthread_mutex_init(&table->philo_arr[i].meal_mtx, NULL);
 	table->philo_arr[i].philo_id = i + 1;
 	table->philo_arr[i].last_meal_time = 0;
 	table->philo_arr[i].is_full = false;
@@ -51,13 +51,12 @@ void	table_init(t_table *table)
 	table->philo_arr = safe_malloc(sizeof(t_philo) * table->nbr_of_philo);
 	table->fork_arr = safe_malloc(sizeof(t_mutex) * table->nbr_of_philo);
 	table->end_simulation = false;
-	table->philo_init_count = 0;
 	table->full_count = 0;
-	safe_mutex_handle(INIT, &table->table_mtx);
-	safe_mutex_handle(INIT, &table->print_mtx);
+	pthread_mutex_init(&table->table_mtx, NULL);
+	pthread_mutex_init(&table->print_mtx, NULL);
 	while (i < table->nbr_of_philo)
 	{
-		safe_mutex_handle(INIT, &table->fork_arr[i]);
+		pthread_mutex_init(&table->fork_arr[i], NULL);
 		i++;
 	}
 	i = 0;
