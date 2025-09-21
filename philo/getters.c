@@ -12,15 +12,15 @@
 
 #include "philo.h"
 
-// long	get_philo_count(t_philo *philo)
-// {
-// 	long	ret;
+long	get_philo_count(t_philo *philo)
+{
+	long	ret;
 
-// 	pthread_mutex_lock(&philo->table->table_mtx);
-// 	ret = philo->table->philo_init_count;
-// 	pthread_mutex_unlock(&philo->table->table_mtx);
-// 	return (ret);
-// }
+	pthread_mutex_lock(&philo->table->table_mtx);
+	ret = philo->table->philo_init_count;
+	pthread_mutex_unlock(&philo->table->table_mtx);
+	return (ret);
+}
 
 bool	get_end_simulation(t_table *table)
 {

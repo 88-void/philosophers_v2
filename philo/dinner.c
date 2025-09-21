@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 23:26:27 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 00:13:46 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ int get_philos_done(t_table *table)
 	count = 0;
 	while (idx < table->nbr_of_philo)
 	{
-		if (get_time()
-			- get_last_meal_time(&table->philo_arr[idx]) >= table->time_to_die)
+		if ((get_time()
+			- get_last_meal_time(&table->philo_arr[idx])) >= table->time_to_die)
 		{
 			write_state(table->philo_arr[idx].philo_id, table, DEATH);
 			set_end_simulation(table, true);
@@ -75,10 +75,12 @@ void	*dinning_routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
+	// while (get_philo_count(philo) < philo->table->nbr_of_philo)
+	// 	usleep(2);
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 		return (one_philo_simulation(philo), NULL);
-	if (philo->philo_id % 2 == 0)
+	if (philo->philo_id % 2 != 1)
 		sleeping_simulation(philo);
 	while (!get_end_simulation(philo->table))
 		dinning_simulation(philo);
@@ -95,7 +97,8 @@ void	dinner_start(t_table *table)
 	{
 		pthread_create(&table->philo_arr[i].philo, NULL, dinning_routine
 			, &table->philo_arr[i]);
-			i++;
+		// increment_philo_init_count(table);
+		i++;
 	}
 	pthread_create(&table->mintor, NULL, monitoring, table);
 	i = 0;

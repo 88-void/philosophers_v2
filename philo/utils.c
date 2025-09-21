@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 22:13:35 by void             ###   ########.fr       */
+/*   Updated: 2025/09/21 23:41:09 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ void	philos_init(int i, t_table *table)
 {
 	pthread_mutex_init(&table->philo_arr[i].meal_mtx, NULL);
 	table->philo_arr[i].philo_id = i + 1;
-	table->philo_arr[i].last_meal_time = 0;
+	table->philo_arr[i].last_meal_time = get_time();
+	table->philo_arr[i].meals = 0;
 	table->philo_arr[i].is_full = false;
 	table->philo_arr[i].table = table;
 	table->philo_arr[i].right_fork = &table->fork_arr[i];

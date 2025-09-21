@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 16:13:51 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 23:08:53 by void             ###   ########.fr       */
+/*   Updated: 2025/09/21 23:57:38 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	eating_simulation(t_philo *philo)
 			return (safe_mutex_handle(UNLOCK, philo->right_fork));
 		pthread_mutex_lock(philo->left_fork);
 		write_state(philo->philo_id, philo->table, FORK);
+		set_last_meal_time(philo, get_time());
 		write_state(philo->philo_id, philo->table, EAT);
 		precise_msleep(philo->table->time_to_eat, philo->table);
-		set_last_meal_time(philo, get_time());
 		pthread_mutex_unlock(philo->left_fork);
 		pthread_mutex_unlock(philo->right_fork);
 		pthread_mutex_lock(&philo->meal_mtx);
