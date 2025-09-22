@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:46 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 22:43:39 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 01:16:21 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	write_state(long philo_id, t_table *table, t_wflag flag)
 	{
 		if (THINK == flag)
 			printf("%ld %ld %sis thinking%s\n",
-				(get_time() - table->start_time),  philo_id, M, RST);
+				(get_time() - table->start_time), philo_id, M, RST);
 		else if (DEATH == flag)
 			printf("%ld %ld %sdied%s\n",
 				(get_time() - table->start_time), philo_id, RD, RST);
@@ -27,11 +27,11 @@ void	write_state(long philo_id, t_table *table, t_wflag flag)
 			printf("%ld %ld %sis sleeping%s\n",
 				(get_time() - table->start_time), philo_id, C, RST);
 		else if (FORK == flag)
-			printf("%ld %ld %shas taken a fork%s\n", 
+			printf("%ld %ld %shas taken a fork%s\n",
 				(get_time() - table->start_time), philo_id, G, RST);
 		else if (EAT == flag)
 			printf("%ld %ld %sis eating%s\n",
-				(get_time() - table->start_time), philo_id, Y, RST);		
+				(get_time() - table->start_time), philo_id, Y, RST);
 	}
 	safe_mutex_handle(UNLOCK, &table->print_mtx);
 }

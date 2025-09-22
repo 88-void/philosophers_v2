@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 23:51:43 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 01:14:40 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef enum s_wflag
 	FORK,
 	THINK,
 	EAT,
-}t_wflag;
+}			t_wflag;
 
 typedef struct s_table	t_table;
 
@@ -62,7 +62,7 @@ typedef struct s_philo
 	t_mutex		*right_fork;
 	t_mutex		*left_fork;
 	t_table		*table;
-}t_philo;
+}				t_philo;
 
 typedef struct s_table
 {
