@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:46 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/22 01:16:21 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 23:30:39 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	write_state(long philo_id, t_table *table, t_wflag flag)
 {
-	safe_mutex_handle(LOCK, &table->print_mtx);
+	pthread_mutex_lock(&table->print_mtx);
 	if (!get_end_simulation(table))
 	{
 		if (THINK == flag)
@@ -33,5 +33,5 @@ void	write_state(long philo_id, t_table *table, t_wflag flag)
 			printf("%ld %ld %sis eating%s\n",
 				(get_time() - table->start_time), philo_id, Y, RST);
 	}
-	safe_mutex_handle(UNLOCK, &table->print_mtx);
+	pthread_mutex_unlock(&table->print_mtx);
 }

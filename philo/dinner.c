@@ -6,11 +6,12 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 06:54:49 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/22 01:27:50 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 23:18:52 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <pthread.h>
 
 int	get_philos_done(t_table *table)
 {
@@ -69,8 +70,8 @@ void	*dinning_routine(void *arg)
 	t_philo	*philo;
 
 	philo = arg;
-	while (get_philo_count(philo) < philo->table->nbr_of_philo)
-		usleep(2);
+	// while (get_philo_count(philo) < philo->table->nbr_of_philo)
+	// 	usleep(2);
 	set_last_meal_time(philo, get_time());
 	if (philo->table->nbr_of_philo == 1)
 	{
@@ -95,7 +96,7 @@ void	dinner_start(t_table *table)
 	{
 		pthread_create(&table->philo_arr[i].philo, NULL, dinning_routine,
 			&table->philo_arr[i]);
-		increment_philo_init_count(table);
+		// increment_philo_init_count(table);
 		i++;
 	}
 	pthread_create(&table->mintor, NULL, monitoring, table);
@@ -108,7 +109,7 @@ void	dinner_start(t_table *table)
 	pthread_join(table->mintor, NULL);
 	i = 0;
 	while (i < table->nbr_of_philo)
-		safe_mutex_handle(DESTROY, &table->fork_arr[i++]);
-	safe_mutex_handle(DESTROY, &table->table_mtx);
-	safe_mutex_handle(DESTROY, &table->print_mtx);
+		pthread_mutex_destroy(&table->fork_arr[i++]);
+	pthread_mutex_destroy(&table->table_mtx);
+	pthread_mutex_destroy(&table->print_mtx);
 }

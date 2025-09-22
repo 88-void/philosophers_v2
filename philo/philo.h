@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:33 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/22 01:14:40 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 23:10:37 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,12 @@ typedef struct s_table
 //error
 void	ft_putstr_err(const char *str);
 void	ft_error(const char *err);
-//safe handling operations
+//safe malloc
 void	*safe_malloc(unsigned long bytes);
-void	safe_ptcreate(pthread_t *thread, void *(f)(void *), void *arg);
-void	safe_ptjoin(pthread_t thread);
-void	safe_mutex_handle(t_mtx_op op, t_mutex *mutex);
 //parsing
-void	parser(int ac, char **av, t_table *table);
+bool	parser(int ac, char **av, t_table *table);
 //init
-void	table_init(t_table *table);
+bool	table_init(t_table *table);
 //time
 long	get_time(void);
 void	precise_msleep(long sleeping_time, t_table *table);

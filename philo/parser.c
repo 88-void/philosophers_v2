@@ -6,17 +6,11 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:14:57 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 22:55:34 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 23:24:31 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_error(const char *err)
-{
-	ft_putstr_err(err);
-	exit(EXIT_FAILURE);
-}
 
 long	ft_atol(char *str)
 {
@@ -31,11 +25,11 @@ long	ft_atol(char *str)
 		i++;
 	}
 	if (res > INT_MAX || res < INT_MIN)
-		ft_error("arguments passed int limit");
+		return (-2);
 	return (res);
 }
 
-void	check_if_only_nbr(char **av)
+bool	check_if_only_nbr(char **av)
 {
 	int	i;
 	int	j;
@@ -47,16 +41,50 @@ void	check_if_only_nbr(char **av)
 		while (av[i][j])
 		{
 			if (av[i][j] < '0' || av[i][j] > '9')
-				ft_error("arguments does not contain only numbers");
+			{
+				ft_putstr_err("arguments does not contain only numbers");
+				return (false);
+			}
 			j++;
 		}
 		i++;
 	}
+	return (true);
 }
 
-void	parser(int ac, char **av, t_table *table)
+bool	check_int_limits(t_table *table)
 {
-	check_if_only_nbr(av);
+	return (table->nbr_of_philo != -2 && table->time_to_die != -2
+		&& table->time_to_eat != -2 && table->time_to_sleep != -2
+		&& table->nbr_of_meals != -2);
+}
+
+bool	check_args_limits(t_table *table)
+{
+	if (!table->nbr_of_philo || table->nbr_of_philo > 200)
+	{
+		ft_putstr_err(
+			"number of philosophers cant be 0 and should not pass 200");
+		return (false);
+	}
+	else if (!table->nbr_of_meals)
+	{
+		ft_putstr_err("number of meals cant be 0");
+		return (false);
+	}
+	else if (table->time_to_die < 60 || table->time_to_eat < 60
+		|| table->time_to_sleep < 60)
+	{
+		ft_putstr_err("time can't be under 60ms");
+		return (false);
+	}
+	return (true);
+}
+
+bool	parser(int ac, char **av, t_table *table)
+{
+	if (!check_if_only_nbr(av))
+		return (false);
 	table->nbr_of_philo = ft_atol(av[1]);
 	table->time_to_die = ft_atol(av[2]);
 	table->time_to_eat = ft_atol(av[3]);
@@ -67,12 +95,9 @@ void	parser(int ac, char **av, t_table *table)
 		table->nbr_of_meals = -1;
 	else
 		table->nbr_of_meals = ft_atol(av[5]);
-	if (!table->nbr_of_philo || table->nbr_of_philo > 200)
-		ft_error("number of philosophers cant be 0 and should not pass 200");
-	else if (!table->nbr_of_meals)
-		ft_error("number of meals cant be 0");
-	else if (table->time_to_die < 60 || table->time_to_eat < 60
-		|| table->time_to_sleep < 60)
-		ft_error("time cant be under 60ms");
-	table_init(table);
+	if (!check_int_limits(table) || !check_args_limits(table))
+		return (false);
+	if (!table_init(table))
+		return (false);
+	return (true);
 }

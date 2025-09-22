@@ -6,7 +6,7 @@
 /*   By: void <void@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 22:15:03 by azarouil          #+#    #+#             */
-/*   Updated: 2025/09/21 23:41:09 by void             ###   ########.fr       */
+/*   Updated: 2025/09/22 23:10:27 by void             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,15 @@ void	philos_init(int i, t_table *table)
 		table->philo_arr[i].left_fork = &table->fork_arr[i - 1];
 }
 
-void	table_init(t_table *table)
+bool	table_init(t_table *table)
 {
 	int	i;
 
 	i = 0;
 	table->philo_arr = safe_malloc(sizeof(t_philo) * table->nbr_of_philo);
 	table->fork_arr = safe_malloc(sizeof(t_mutex) * table->nbr_of_philo);
+	if (table->philo_arr == NULL || table->fork_arr == NULL)
+		return (false);
 	table->end_simulation = false;
 	table->full_count = 0;
 	pthread_mutex_init(&table->table_mtx, NULL);
@@ -66,4 +68,5 @@ void	table_init(t_table *table)
 		philos_init(i, table);
 		i++;
 	}
+	return (true);
 }
